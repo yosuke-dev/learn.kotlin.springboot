@@ -1,10 +1,14 @@
 package lean.kotlin.tutorial.springboot
 
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("greeter")
-class GreeterController(private val greeter: Greeter) {
+class GreeterController() {
+    @Autowired
+    private lateinit var greeter: Greeter
+
     @GetMapping("/hello")
     fun hello(@RequestParam("name") name: String): HelloResponse {
         return HelloResponse("Hello $name")
