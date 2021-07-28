@@ -85,4 +85,14 @@ class UserController {
             return "$count 行のレコードを更新しました"
         }
     }
+
+    @DeleteMapping("/delete/{id}")
+    fun delete(@PathVariable("id") id: Int): String {
+        createSessionFactory().openSession().use { session ->
+            val mapper = session.getMapper(UserMapper::class.java)
+            val count = mapper.deleteByPrimaryKey(id)
+            session.commit()
+            return "$count 行のレコードを削除しました"
+        }
+    }
 }
