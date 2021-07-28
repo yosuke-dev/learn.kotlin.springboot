@@ -72,4 +72,17 @@ class UserController {
             return "$count 行のレコードを更新しました"
         }
     }
+
+    @PatchMapping("/updateByName")
+    fun updateByName(@RequestBody request: UserRecord): String {
+        createSessionFactory().openSession().use { session ->
+            val mapper = session.getMapper(UserMapper::class.java)
+            val count = mapper.update {
+                updateSelectiveColumns(request)
+                where(name, isEqualTo(request.name.toString()))
+            }
+            session.commit()
+            return "$count 行のレコードを更新しました"
+        }
+    }
 }
