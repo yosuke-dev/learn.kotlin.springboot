@@ -1,0 +1,6 @@
+spring:
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3308/example?characterEncoding=utf8
+    username: kotlin
+    password: kotlinpw
+    driverClassName: com.mysql.cj.jdbc.Driver

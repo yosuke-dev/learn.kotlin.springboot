@@ -4,30 +4,25 @@ import database.*
 import database.UserDynamicSqlSupport.User.age
 import database.UserDynamicSqlSupport.User.name
 import database.UserDynamicSqlSupport.User.profile
-import org.mybatis.dynamic.sql.util.kotlin.elements.isEqualTo
-import org.mybatis.dynamic.sql.util.kotlin.elements.isGreaterThanOrEqualTo
+import org.mybatis.dynamic.sql.util.kotlin.elements.*
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("user")
-class UserController {
-    @GetMapping("/select")
-    fun select(): List<UserRecord> {
+class UserController() {
+    @GetMapping("/select/{id}")
+    fun select(@PathVariable("id") id: Int): UserRecord? {
         createSessionFactory().openSession().use { session ->
             val mapper = session.getMapper(UserMapper::class.java)
-            return mapper.select {
-                where(age, isGreaterThanOrEqualTo(25))
-            }
+            return mapper.selectByPrimaryKey(id)
         }
     }
 
-    @GetMapping("/count")
-    fun count(): Long {
+    @GetMapping("/index")
+    fun index(): List<UserRecord> {
         createSessionFactory().openSession().use { session ->
             val mapper = session.getMapper(UserMapper::class.java)
-            return mapper.count {
-                where(age, isGreaterThanOrEqualTo(25))
-            }
+            return mapper.select {  }
         }
     }
 
