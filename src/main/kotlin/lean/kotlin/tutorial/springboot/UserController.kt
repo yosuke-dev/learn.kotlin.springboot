@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("user")
-class SelectController {
+class UserController {
     @GetMapping("/select")
     fun select(): List<UserRecord> {
         createSessionFactory().openSession().use { session ->
@@ -43,6 +43,17 @@ class SelectController {
             val count = mapper.insertMultiple(request)
             session.commit()
             return "$count 行のレコードを挿入しました"
+        }
+    }
+
+    @PatchMapping("/update")
+    fun update(@RequestBody request: UserRecord): String {
+        createSessionFactory().openSession().use { session ->
+            val mapper = session.getMapper(UserMapper::class.java)
+            // updateByPrimaryKeyだと値が設定されていない項目をNullで更新する
+            val count = mapper.updateByPrimaryKeySelective(request)
+            session.commit()
+            return "$count 行のレコードを更新しました"
         }
     }
 }
